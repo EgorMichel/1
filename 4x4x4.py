@@ -1,10 +1,8 @@
 import pygame
-from random import randint
-import time
 
 pygame.init()
 FPS = 10
-screen = pygame.display.set_mode((180, 800))
+screen = pygame.display.set_mode((181, 800))
 
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
@@ -13,6 +11,7 @@ GREEN = (0, 255, 0)
 MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
+f1 = pygame.font.Font(None, 36)
 
 cell_size = 45
 
@@ -21,12 +20,28 @@ position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
             ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
             ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]))
 
+# position = (([0.0, 1.0, 1.0, 2.0], [1.0, 1.0, 1.0, 2.0], [0.0, 0.0, 2.0, 0.0], [1.0, 1.0, 1.0, 1.0]),
+#             ([2.0, 2.0, 0.0, 0.0], [1.0, 0.0, 1.0, 0.0], [0.0, 0.0, 2.0, 2.0], [0.0, 0.0, 0.0, 2.0]),
+#             ([0.0, 2.0, 2.0, 0.0], [0.0, 1.0, 2.0, 2.0], [2.0, 1.0, 0.0, 0.0], [0.0, 0.0, 0.0, 1.0]),
+#             ([0.0, 2.0, 0.0, 1.0], [0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 2.0, 2.0], [2.0, 0.0, 1.0, 0.0]))
+
 current_player = [1]
 
 
-# def check_win():
-#     # floors:
-#     for k in range(4):
+def check_win(i, j, k):
+    return position[k][0][0] == position[k][1][1] == position[k][2][2] == position[k][3][3] != 0 \
+           or position[k][3][0] == position[k][2][1] == position[k][1][2] == position[k][0][3] != 0 \
+           or position[k][0][j] == position[k][1][j] == position[k][2][j] == position[k][3][j] != 0 \
+           or position[k][i] == [1, 1, 1, 1] or position[k][i] == [2, 2, 2, 2] \
+           or position[0][i][j] == position[1][i][j] == position[2][i][j] == position[3][i][j] != 0 \
+           or position[0][i][0] == position[1][i][1] == position[2][i][2] == position[3][i][3] != 0 \
+           or position[3][i][0] == position[2][i][1] == position[1][i][2] == position[0][i][3] != 0 \
+           or position[0][0][j] == position[1][1][j] == position[2][2][j] == position[3][3][j] != 0 \
+           or position[3][0][j] == position[2][1][j] == position[1][2][j] == position[0][3][j] != 0 \
+           or position[0][0][0] == position[1][1][1] == position[2][2][2] == position[3][3][3] != 0 \
+           or position[3][0][0] == position[2][1][1] == position[1][2][2] == position[0][3][3] != 0 \
+           or position[0][0][3] == position[1][1][2] == position[2][2][1] == position[3][3][0] != 0 \
+           or position[0][3][0] == position[1][2][1] == position[2][1][2] == position[3][0][3] != 0
 
 
 def click(event_):
@@ -69,6 +84,7 @@ def draw_figure(n, x_, y_):
 #             ([1, 0, 0, 1], [0, 0, 0, 0], [0, 0, 0, 0], [1, 0, 0, 1]))
 
 def draw():
+    counter = 0
     for k in range(4):
         for i in range(4):
             for j in range(4):
@@ -113,6 +129,9 @@ def draw():
                     print('Main diagonal 4')
 
                 pygame.draw.rect(screen, BLACK, (cell_size * i, cell_size * j + 200 * k, cell_size, cell_size), 2)
+                text1 = f1.render(str(counter), True, (180, 0, 0))
+                counter += 1
+                screen.blit(text1, (cell_size * i, cell_size * j + 200 * k))
                 draw_figure(position[k][i][j], cell_size * i, cell_size * j + 200 * k)
 
 
