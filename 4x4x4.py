@@ -4,7 +4,7 @@ import time
 
 pygame.init()
 FPS = 10
-screen = pygame.display.set_mode((180, 800))
+screen = pygame.display.set_mode((600, 600))
 
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
@@ -14,7 +14,7 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 
-cell_size = 45
+cell_size = 70
 
 position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
             ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -41,8 +41,8 @@ def click(event_):
                                 position[k1][i2][j3] = 0
                                 current_player[0] = 1
 
-                if cell_size * i < event_.pos[0] < cell_size * (i + 1) and \
-                        cell_size * j + k * 200 < event_.pos[1] < cell_size * (j + 1) + k * 200:
+                if 0.75 * i + cell_size * i < event_.pos[0] < 0.75 * i + cell_size * (i + 1) and \
+                        0.5 * j + cell_size * j + k * 120 < event_.pos[1] < 0.5 * j + cell_size * (j + 1) + k * 120:
                     if event_.button == 1 and position[k][i][j] == 0:
                         position[k][i][j] = current_player[0]
                     elif event_.button == 3:
@@ -56,11 +56,11 @@ def click(event_):
 
 def draw_figure(n, x_, y_):
     if n == 1:
-        pygame.draw.line(screen, RED, (x_, y_), (x_ + cell_size, y_ + cell_size), 7)
-        pygame.draw.line(screen, RED, (x_ + cell_size, y_), (x_, y_ + cell_size), 7)
+        pygame.draw.line(screen, RED, (x_, y_), (x_ + 0.5 * cell_size, y_ + 0.5 * cell_size), 2)
+        pygame.draw.line(screen, RED, (x_ + 0.5 * cell_size, y_), (x_, y_ + 0.5 * cell_size), 2)
 
     if n == 2:
-        pygame.draw.circle(screen, YELLOW, (x_ + cell_size // 2, y_ + cell_size // 2), cell_size // 2, 7)
+        pygame.draw.circle(screen, YELLOW, (x_ + cell_size // 2, y_ + cell_size // 2), cell_size // 3, 2)
 
 
 # position = (([1, 1, 1, 1], [1, 1, 0, 0], [1, 0, 1, 0], [1, 0, 0, 1]),
@@ -70,6 +70,10 @@ def draw_figure(n, x_, y_):
 
 def draw():
     for k in range(4):
+        pygame.draw.polygon(screen, BLACK, ((0, cell_size * (2 + 2 * k)),
+                                            (1.5 * cell_size, cell_size * (0.5 + 2 * k)),
+                                            (4.5 * cell_size, cell_size * (0.5 + 2 * k)),
+                                            (3 * cell_size, cell_size * (2 + 2 * k))), 2)
         for i in range(4):
             for j in range(4):
 
@@ -112,8 +116,7 @@ def draw():
                 if position[0][3][0] == position[1][2][1] == position[2][1][2] == position[3][0][3] != 0:
                     print('Main diagonal 4')
 
-                pygame.draw.rect(screen, BLACK, (cell_size * i, cell_size * j + 200 * k, cell_size, cell_size), 2)
-                draw_figure(position[k][i][j], cell_size * i, cell_size * j + 200 * k)
+                draw_figure(position[k][i][j], cell_size * i, cell_size * j + 120 * k)
 
 
 clock = pygame.time.Clock()
