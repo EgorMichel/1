@@ -4,17 +4,18 @@ import time
 
 pygame.init()
 FPS = 10
-screen = pygame.display.set_mode((180, 800))
+screen = pygame.display.set_mode((580, 500))
 
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
+WHITE = (255, 255, 255)
 MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 
-cell_size = 45
+cell_size = 23
 
 position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
             ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -39,10 +40,10 @@ def click(event_):
                         for i2 in range(4):
                             for j3 in range(4):
                                 position[k1][i2][j3] = 0
-                                current_player[0] = 1
+                                current_player[0] = "Move of cross"
 
                 if cell_size * i < event_.pos[0] < cell_size * (i + 1) and \
-                        cell_size * j + k * 200 < event_.pos[1] < cell_size * (j + 1) + k * 200:
+                        cell_size * j + k * 6 * cell_size < event_.pos[1] < cell_size * (j + 1) + k * cell_size * 6:
                     if event_.button == 1 and position[k][i][j] == 0:
                         position[k][i][j] = current_player[0]
                     elif event_.button == 3:
@@ -112,20 +113,35 @@ def draw():
                 if position[0][3][0] == position[1][2][1] == position[2][1][2] == position[3][0][3] != 0:
                     print('Main diagonal 4')
 
-                pygame.draw.rect(screen, BLACK, (cell_size * i, cell_size * j + 200 * k, cell_size, cell_size), 2)
-                draw_figure(position[k][i][j], cell_size * i, cell_size * j + 200 * k)
+                pygame.draw.rect(screen, BLACK,
+                                 (cell_size * i, cell_size * j + 6 * cell_size * k, cell_size, cell_size), 2)
+                draw_figure(position[k][i][j], cell_size * i, cell_size * j + 6 * k * cell_size)
 
 
+pygame.font.init()
+text_font = pygame.font.Font(None, 60)  # the font to write with
+
+frame_count = 0
 clock = pygame.time.Clock()
 finished = False
 
 while not finished:
     clock.tick(FPS)
+    if current_player[0] == 1:
+        frame_count = "Ход крестиков"
+    if current_player[0] == 2:
+        frame_count = "Ход ноликов"
+    text_image = text_font.render(str(frame_count), True, WHITE)
+    text_width = text_image.get_width()
+    text_height = text_image.get_height()
+    text_x = 150
+    text_y = 20
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             finished = True
         if event.type == pygame.MOUSEBUTTONDOWN:
             click(event)
     screen.fill(BLUE)
+    screen.blit(text_image, (text_x, text_y))
     draw()
     pygame.display.update()
