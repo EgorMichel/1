@@ -5,6 +5,7 @@ import time
 pygame.init()
 FPS = 10
 screen = pygame.display.set_mode((580, 500))
+pygame.display.set_caption("Крестики - нолики")
 
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
@@ -40,9 +41,10 @@ def click(event_):
                         for i2 in range(4):
                             for j3 in range(4):
                                 position[k1][i2][j3] = 0
-                                current_player[0] = "Move of cross"
+                                current_player[0] = 0
 
-                if cell_size * i < event_.pos[0] < cell_size * (i + 1) and \
+                if 2 * (3 - k) * cell_size + cell_size * i < event_.pos[0] < 2 * (3 - k) * cell_size + cell_size * (
+                        i + 1) and \
                         cell_size * j + k * 6 * cell_size < event_.pos[1] < cell_size * (j + 1) + k * cell_size * 6:
                     if event_.button == 1 and position[k][i][j] == 0:
                         position[k][i][j] = current_player[0]
@@ -114,8 +116,10 @@ def draw():
                     print('Main diagonal 4')
 
                 pygame.draw.rect(screen, BLACK,
-                                 (cell_size * i, cell_size * j + 6 * cell_size * k, cell_size, cell_size), 2)
-                draw_figure(position[k][i][j], cell_size * i, cell_size * j + 6 * k * cell_size)
+                                 (cell_size * i + 2 * (3 - k) * cell_size, cell_size * j + 6 * cell_size * k, cell_size,
+                                  cell_size), 2)
+                draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
+                            cell_size * j + 6 * k * cell_size)
 
 
 pygame.font.init()
@@ -134,7 +138,7 @@ while not finished:
     text_image = text_font.render(str(frame_count), True, WHITE)
     text_width = text_image.get_width()
     text_height = text_image.get_height()
-    text_x = 150
+    text_x = 250
     text_y = 20
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
