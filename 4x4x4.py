@@ -197,6 +197,114 @@ class Button:
         return False
 
 
+class CheckWin:
+    def __init__(self):
+        self.who_wins = ''
+        self.win = False
+
+    def check(self):
+        for k in range(4):
+            for i in range(4):
+                for j in range(4):
+
+                    if position[k][0][0] == position[k][1][1] == position[k][2][2] == position[k][3][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[k][3][0] == position[k][2][1] == position[k][1][2] == position[k][0][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[k][0][j] == position[k][1][j] == position[k][2][j] == position[k][3][j] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[k][i] == [1, 1, 1, 1] or position[k][i] == [-1, -1, -1, -1]:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[0][i][j] == position[1][i][j] == position[2][i][j] == position[3][i][j] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[0][i][0] == position[1][i][1] == position[2][i][2] == position[3][i][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[3][i][0] == position[2][i][1] == position[1][i][2] == position[0][i][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[0][0][j] == position[1][1][j] == position[2][2][j] == position[3][3][j] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[3][0][j] == position[2][1][j] == position[1][2][j] == position[0][3][j] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[0][0][0] == position[1][1][1] == position[2][2][2] == position[3][3][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[3][0][0] == position[2][1][1] == position[1][2][2] == position[0][3][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[0][0][3] == position[1][1][2] == position[2][2][1] == position[3][3][0] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+                    if position[0][3][0] == position[1][2][1] == position[2][1][2] == position[3][0][3] != 0:
+                        if current_player[0] == 1:
+                            self.who_wins = 'Circle wins'
+                        else:
+                            self.who_wins = 'Cross wins'
+                        self.win = True
+
+    def message(self):
+        if self.win:
+            font = pygame.font.Font(None, 56)
+            text = font.render(self.who_wins, True, BLUE)
+            screen.blit(text, (10 * (cell_size + 1), 180))
+
+
 class Render(object):
     def __init__(self):
         self.win = False
@@ -205,114 +313,10 @@ class Render(object):
         self.who_wins = ''
 
     def draw(self):
-        counter___ = 0
         for k in range(4):
             for i in range(4):
                 for j in range(4):
-
-                    if position[k][0][0] == position[k][1][1] == position[k][2][2] == position[k][3][3] != 0:
-                        self.message = 'Horizontal diagonal left to right'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[k][3][0] == position[k][2][1] == position[k][1][2] == position[k][0][3] != 0:
-                        self.message = 'Horizontal diagonal right to left'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[k][0][j] == position[k][1][j] == position[k][2][j] == position[k][3][j] != 0:
-                        self.message = 'Horizontal line'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[k][i] == [1, 1, 1, 1] or position[k][i] == [-1, -1, -1, -1]:
-                        self.message = 'Horizontal column'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[0][i][j] == position[1][i][j] == position[2][i][j] == position[3][i][j] != 0:
-                        self.message = 'Vertical line'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[0][i][0] == position[1][i][1] == position[2][i][2] == position[3][i][3] != 0:
-                        self.message = 'Vertical diagonal left to right'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[3][i][0] == position[2][i][1] == position[1][i][2] == position[0][i][3] != 0:
-                        self.message = 'Vertical diagonal right to left'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[0][0][j] == position[1][1][j] == position[2][2][j] == position[3][3][j] != 0:
-                        self.message = 'Vertical diagonal 2 left to right'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[3][0][j] == position[2][1][j] == position[1][2][j] == position[0][3][j] != 0:
-                        self.message = 'Vertical diagonal 2 right to left'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[0][0][0] == position[1][1][1] == position[2][2][2] == position[3][3][3] != 0:
-                        self.message = 'Main diagonal 1'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[3][0][0] == position[2][1][1] == position[1][2][2] == position[0][3][3] != 0:
-                        self.message = 'Main diagonal 2'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[0][0][3] == position[1][1][2] == position[2][2][1] == position[3][3][0] != 0:
-                        self.message = 'Main diagonal 3'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
-
-                    if position[0][3][0] == position[1][2][1] == position[2][1][2] == position[3][0][3] != 0:
-                        self.message = 'Main diagonal 4'
-                        if current_player[0] == 1:
-                            self.who_wins = 'Circle wins'
-                        else:
-                            self.who_wins = 'Cross wins'
-                        self.win = True
+                    counter___ = 0
 
                     f1 = pygame.font.Font(None, 25)
                     text1 = f1.render(str(counter___), True, (180, 0, 0))
@@ -334,8 +338,8 @@ class Render(object):
             screen.fill(GREEN)
             message1 = text_font.render(self.message, True, BLUE)
             message2 = text_font.render(self.who_wins, True, BLUE)
-            screen.blit(message1, (width // 2 - 150, height // 2))
-            screen.blit(message2, (width // 2 - 150, height // 2 + 30))
+            screen.blit(message1, (width // 2 - 160, height // 2))
+            screen.blit(message2, (width // 2 - 160, height // 2 + 30))
             pygame.display.update()
             time.sleep(5)
 
@@ -379,6 +383,7 @@ def start_with_ai():
 
 def start_the_game():
     render = Render()
+    check_win = CheckWin()
     frame_count = ''
     finished = False
     while not finished:
@@ -394,11 +399,13 @@ def start_the_game():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and not finished:
+            if event.type == pygame.MOUSEBUTTONDOWN and not check_win.win:
                 click(event)
         screen.fill(CYAN)
         screen.blit(text_image, (text_x, text_y))
         render.draw()
+        check_win.check()
+        check_win.message()
         render.game_over()
         keys = pygame.key.get_pressed()
         if render.win is True or keys[pygame.K_p]:
