@@ -1,8 +1,9 @@
 import time
-
+import numpy as np
 import pygame
 import pygame_menu
 import sys
+from random import randint
 
 pygame.init()
 cell_size = 30
@@ -21,6 +22,58 @@ MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 
+mutation_chance = 0.1
+mutation_coef = 0.05
+mutation_parametr = 0.01
+cross_chance = 0.9
+cross_parametr = 0.2
+population = 256
+iterations = 20000
+tournament_count = 4
+evaluation_precise = 25
+
+class Player:
+    def __init__(self):
+        self.bias = np.random.randint(-2, 2, 64)
+        self.weights = np.random.randint(-2, 2, (64, 64))
+
+    def mutation(self):
+        for i in range(64):
+            if randint(1, 100) <= 100 * mutation_parametr:
+                self.bias[i] += randint(-1, 1)
+                if self.bias[i] > 10:
+                    self.bias[i] = 10
+                if self.bias[i] < -10:
+                    self.bias[i] = -10
+
+            for j in range(64):
+                if randint(1, 100) <= 100 * mutation_parametr:
+                    self.weights[i][j] += randint(-5, 5)
+                    if self.weights[i][j] > 100:
+                        self.weights[i][j] = 100
+                    if self.weights[i][j] < -100:
+                        self.weights[i][j] = -100
+
+    def predict(self, input_values):
+        return np.dot(input_values, self.weights) + self.bias;
+
+
+linear_bot = Player()
+with open('LinearAI/_player1_weights.txt', 'r') as file:
+    linear_bot.weights = np.loadtxt(file)
+with open('LinearAI/_player1_bias.txt', 'r') as file:
+    linear_bot.bias = np.loadtxt(file)
+
+
+def array_to_line(array):
+    line = []
+    for k in range(4):
+        for i in range(4):
+            for j in range(4):
+                line.append(array[k][i][j])
+    return line
+
+
 position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
             ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
             ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -37,6 +90,30 @@ def start():
 
 start()
 current_player = [1]
+
+
+def click_ai(event_):
+    for k in range(4):
+        for i in range(4):
+            for j in range(4):
+
+                if event_.button == 2:
+                    for k1 in range(4):
+                        for i2 in range(4):
+                            for j3 in range(4):
+                                position[k1][i2][j3] = 0
+                                current_player[0] = 0
+
+                if 2 * (3 - k) * cell_size + cell_size * i < event_.pos[0] < 2 * (3 - k) * cell_size + cell_size * (
+                        i + 1) and \
+                        cell_size * j + k * 6 * cell_size < event_.pos[1] < cell_size * (j + 1) + k * cell_size * 6:
+                    if event_.button == 1 and position[k][i][j] == 0:
+                        position[k][i][j] = -1
+
+                    if current_player[0] == 1:
+                        current_player[0] = 2
+                    else:
+                        current_player[0] = 1
 
 
 def click(event_):
@@ -244,6 +321,35 @@ pygame.font.init()
 text_font = pygame.font.Font(None, 55)
 
 clock = pygame.time.Clock()
+
+
+def start_with_ai():
+    render = Render()
+    frame_count = ''
+    finished = False
+    while not finished:
+        clock.tick(FPS)
+        if current_player[0] == 1:
+            frame_count = "Ход компьютера"
+        if current_player[0] == 2:
+            frame_count = "Ваш ход"
+        text_image = text_font.render(str(frame_count), True, BLUE)
+        text_x = 10 * (cell_size + 1)
+        text_y = 20
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN and not finished:
+                click_ai(event)
+        screen.fill(CYAN)
+        screen.blit(text_image, (text_x, text_y))
+        render.draw()
+        render.game_over()
+        keys = pygame.key.get_pressed()
+        if render.win is True or keys[pygame.K_p]:
+            break
+        pygame.display.update()
 
 
 def start_the_game():

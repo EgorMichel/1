@@ -121,7 +121,6 @@ def draw():
                 draw_figure(position[k][i][j], cell_size * i, cell_size * j + 200 * k)
 
 
-
 clock = pygame.time.Clock()
 finished = False
 
