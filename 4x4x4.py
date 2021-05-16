@@ -12,6 +12,7 @@ height = 22 * cell_size
 width = 10 * cell_size + 300
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Крестики - нолики")
+current_player = [1]
 
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
@@ -104,10 +105,6 @@ def start():
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]))
-
-
-start()
-current_player = [1]
 
 
 def move_ai():
@@ -334,7 +331,6 @@ class Render(object):
 
     def game_over(self):
         if self.win is True:
-            start()
             screen.fill(GREEN)
             message1 = text_font.render(self.message, True, BLUE)
             message2 = text_font.render(self.who_wins, True, BLUE)
@@ -351,6 +347,7 @@ clock = pygame.time.Clock()
 
 
 def start_with_ai():
+    start()
     current_player[0] = 1
     render = Render()
     check_win = CheckWin()
@@ -384,6 +381,7 @@ def start_with_ai():
 
 
 def start_the_game():
+    start()
     render = Render()
     check_win = CheckWin()
     frame_count = ''
