@@ -367,7 +367,7 @@ def start_with_ai():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN and not finished:
+            if event.type == pygame.MOUSEBUTTONDOWN and not check_win.win:
                 click(event)
         screen.fill(CYAN)
         screen.blit(text_image, (text_x, text_y))
