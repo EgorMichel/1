@@ -24,10 +24,10 @@ CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
 
 mutation_chance = 0.1
-mutation_coef = 0.05
-mutation_parametr = 0.01
+mutation_coefficient = 0.05
+mutation_parameter = 0.01
 cross_chance = 0.9
-cross_parametr = 0.2
+cross_parameter = 0.2
 population = 256
 iterations = 20000
 tournament_count = 4
@@ -41,7 +41,7 @@ class Player:
 
     def mutation(self):
         for i in range(64):
-            if randint(1, 100) <= 100 * mutation_parametr:
+            if randint(1, 100) <= 100 * mutation_parameter:
                 self.bias[i] += randint(-1, 1)
                 if self.bias[i] > 10:
                     self.bias[i] = 10
@@ -49,7 +49,7 @@ class Player:
                     self.bias[i] = -10
 
             for j in range(64):
-                if randint(1, 100) <= 100 * mutation_parametr:
+                if randint(1, 100) <= 100 * mutation_parameter:
                     self.weights[i][j] += randint(-5, 5)
                     if self.weights[i][j] > 100:
                         self.weights[i][j] = 100
@@ -328,16 +328,6 @@ class Render(object):
                                       cell_size), 2)
                     draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
                                 cell_size * j + 6 * k * cell_size)
-
-    def game_over(self):
-        if self.win is True:
-            screen.fill(GREEN)
-            message1 = text_font.render(self.message, True, BLUE)
-            message2 = text_font.render(self.who_wins, True, BLUE)
-            screen.blit(message1, (width // 2 - 160, height // 2))
-            screen.blit(message2, (width // 2 - 160, height // 2 + 30))
-            pygame.display.update()
-            time.sleep(5)
 
 
 pygame.font.init()
