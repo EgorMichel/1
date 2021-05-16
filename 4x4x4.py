@@ -353,6 +353,7 @@ clock = pygame.time.Clock()
 def start_with_ai():
     current_player[0] = 1
     render = Render()
+    check_win = CheckWin()
     frame_count = ''
     finished = False
     while not finished:
@@ -374,7 +375,8 @@ def start_with_ai():
         screen.fill(CYAN)
         screen.blit(text_image, (text_x, text_y))
         render.draw()
-        render.game_over()
+        check_win.check()
+        check_win.message()
         keys = pygame.key.get_pressed()
         if render.win is True or keys[pygame.K_p]:
             break
@@ -406,7 +408,6 @@ def start_the_game():
         render.draw()
         check_win.check()
         check_win.message()
-        render.game_over()
         keys = pygame.key.get_pressed()
         if render.win is True or keys[pygame.K_p]:
             break
