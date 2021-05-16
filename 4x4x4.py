@@ -32,6 +32,7 @@ iterations = 20000
 tournament_count = 4
 evaluation_precise = 25
 
+
 class Player:
     def __init__(self):
         self.bias = np.random.randint(-2, 2, 64)
@@ -55,7 +56,7 @@ class Player:
                         self.weights[i][j] = -100
 
     def predict(self, input_values):
-        return np.dot(input_values, self.weights) + self.bias;
+        return np.dot(input_values, self.weights) + self.bias
 
 
 linear_bot = Player()
@@ -72,6 +73,23 @@ def array_to_line(array):
             for j in range(4):
                 line.append(array[k][i][j])
     return line
+
+
+def line_to_array(pos):
+    position__ = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
+                  ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
+                  ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
+                  ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]))
+
+    counter = 0
+
+    for k in range(4):
+        for i in range(4):
+            for j in range(4):
+                position__[k][i][j] = pos[counter]
+                counter += 1
+
+    return position__
 
 
 position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -92,28 +110,25 @@ start()
 current_player = [1]
 
 
-def click_ai(event_):
-    for k in range(4):
-        for i in range(4):
-            for j in range(4):
+def move_ai():
+    line = array_to_line(position)
+    if current_player[0] == 1:
+        res1 = linear_bot.predict(line)
+        while line[np.argmax(res1)] != 0:
+            res1[np.argmax(res1)] = -99999
 
-                if event_.button == 2:
-                    for k1 in range(4):
-                        for i2 in range(4):
-                            for j3 in range(4):
-                                position[k1][i2][j3] = 0
-                                current_player[0] = 0
+        index = np.argmax(res1)
 
-                if 2 * (3 - k) * cell_size + cell_size * i < event_.pos[0] < 2 * (3 - k) * cell_size + cell_size * (
-                        i + 1) and \
-                        cell_size * j + k * 6 * cell_size < event_.pos[1] < cell_size * (j + 1) + k * cell_size * 6:
-                    if event_.button == 1 and position[k][i][j] == 0:
-                        position[k][i][j] = -1
-
-                    if current_player[0] == 1:
-                        current_player[0] = 2
-                    else:
-                        current_player[0] = 1
+        counter_ = 0
+        for k_ in range(4):
+            for i_ in range(4):
+                for j_ in range(4):
+                    if index == counter_:
+                        position[k_][j_][i_] = 1
+                        counter_ += 1
+                        break
+                    counter_ += 1
+        current_player[0] = -1
 
 
 def click(event_):
@@ -137,7 +152,7 @@ def click(event_):
                         position[k][i][j] = 0
 
                     if current_player[0] == 1:
-                        current_player[0] = 2
+                        current_player[0] = -1
                     else:
                         current_player[0] = 1
 
@@ -147,7 +162,7 @@ def draw_figure(n, x_, y_):
         pygame.draw.line(screen, RED, (x_, y_), (x_ + cell_size, y_ + cell_size), 7)
         pygame.draw.line(screen, RED, (x_ + cell_size, y_), (x_, y_ + cell_size), 7)
 
-    if n == 2:
+    if n == -1:
         pygame.draw.circle(screen, YELLOW, (x_ + cell_size // 2, y_ + cell_size // 2), cell_size // 2, 7)
 
 
@@ -218,7 +233,7 @@ class Render(object):
                             self.who_wins = 'Cross wins'
                         self.win = True
 
-                    if position[k][i] == [1, 1, 1, 1] or position[k][i] == [2, 2, 2, 2]:
+                    if position[k][i] == [1, 1, 1, 1] or position[k][i] == [-1, -1, -1, -1]:
                         self.message = 'Horizontal column'
                         if current_player[0] == 1:
                             self.who_wins = 'Circle wins'
@@ -324,14 +339,16 @@ clock = pygame.time.Clock()
 
 
 def start_with_ai():
+    current_player[0] = 1
     render = Render()
     frame_count = ''
     finished = False
     while not finished:
         clock.tick(FPS)
+        move_ai()
         if current_player[0] == 1:
             frame_count = "Ход компьютера"
-        if current_player[0] == 2:
+        if current_player[0] == -1:
             frame_count = "Ваш ход"
         text_image = text_font.render(str(frame_count), True, BLUE)
         text_x = 10 * (cell_size + 1)
@@ -341,7 +358,7 @@ def start_with_ai():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN and not finished:
-                click_ai(event)
+                click(event)
         screen.fill(CYAN)
         screen.blit(text_image, (text_x, text_y))
         render.draw()
@@ -360,7 +377,7 @@ def start_the_game():
         clock.tick(FPS)
         if current_player[0] == 1:
             frame_count = "Ход крестиков"
-        if current_player[0] == 2:
+        if current_player[0] == -1:
             frame_count = "Ход ноликов"
         text_image = text_font.render(str(frame_count), True, BLUE)
         text_x = 10 * (cell_size + 1)
@@ -404,7 +421,7 @@ def help_():
 menu = pygame_menu.Menu('Tic Tac Toe', width, height,
                         theme=pygame_menu.themes.THEME_BLUE)
 
-menu.add.button('Игра с ботом', start_the_game)
+menu.add.button('Игра с ботом', start_with_ai)
 menu.add.button('Игра с человеком', start_the_game)
 menu.add.button('Помощь', help_)
 menu.add.button('Выход', pygame_menu.events.EXIT)
