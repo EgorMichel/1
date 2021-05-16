@@ -74,6 +74,35 @@ def draw_figure(n, x_, y_):
         pygame.draw.circle(screen, YELLOW, (x_ + cell_size // 2, y_ + cell_size // 2), cell_size // 2, 7)
 
 
+class Button:
+    def __init__(self, color, x, y, w, h, surface, text=''):
+        self.color = color
+        self.x = x
+        self.y = y
+        self.width = w
+        self.height = h
+        self.text = text
+        self.surface = surface
+
+    def show(self):
+        # Call this method to draw the button on the screen
+
+        pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height), 0)
+
+        if self.text != '':
+            font = pygame.font.SysFont('arial', 36)
+            text = font.render(self.text, True, BLACK)
+            self.surface.blit(text,
+                              (self.x + (self.width // 2 + text.get_width() // 2),
+                               self.y + (self.height // 2 + text.get_height() // 2)))
+
+    def is_pressed(self, pos):
+        # Pos is the mouse position or a tuple of (x,y) coordinates
+        if (pos[0] > self.x) and pos[0] < self.x + self.width:
+            if pos[1] > self.y and (pos[1] < self.y + self.height):
+                return True
+        return False
+
 
 class Render(object):
     def __init__(self):
@@ -247,11 +276,22 @@ def start_the_game():
 
 
 def help_():
-    while True:
-        font = pygame.font.SysFont('arial', 36)
-        message = font.render("Press 'p' key to return to the menu", True, BLUE)
-        screen.fill(GREEN)
-        screen.blit(message, (width//2 - 200, height//2))
+    hint = True
+    button = Button(BLUE, width - 40, height + 20, 80, 40, screen, 'Back')
+    screen.fill(GREEN)
+    font = pygame.font.SysFont('arial', 36)
+    message = font.render("Press 'p' key to return to the menu", True, BLUE)
+    screen.blit(message, (width // 2 - 200, height // 2))
+    button.show()
+    pygame.display.update()
+    while hint:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    if button.is_pressed(event.pos):
+                        hint = False
+                        break
+        clock.tick(FPS)
         pygame.display.update()
 
 
@@ -261,7 +301,7 @@ menu = pygame_menu.Menu('Tic Tac Toe', width, height,
 menu.add.button('Игра с ботом', start_the_game)
 menu.add.button('Игра с человеком', start_the_game)
 menu.add.button('Помощь', help_)
-menu.add.button('Quit', pygame_menu.events.EXIT)
+menu.add.button('Выход', pygame_menu.events.EXIT)
 
 while True:
 
