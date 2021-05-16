@@ -115,16 +115,17 @@ def move_ai():
     if current_player[0] == 1:
         res1 = linear_bot.predict(line)
         while line[np.argmax(res1)] != 0:
-            res1[np.argmax(res1)] = -99999
+            res1[np.argmax(res1)] = float('-inf')
 
         index = np.argmax(res1)
+        print(index)
 
         counter_ = 0
         for k_ in range(4):
             for i_ in range(4):
                 for j_ in range(4):
                     if index == counter_:
-                        position[k_][j_][i_] = 1
+                        position[k_][i_][j_] = 1
                         counter_ += 1
                         break
                     counter_ += 1
@@ -204,7 +205,7 @@ class Render(object):
         self.who_wins = ''
 
     def draw(self):
-
+        counter___ = 0
         for k in range(4):
             for i in range(4):
                 for j in range(4):
@@ -312,6 +313,13 @@ class Render(object):
                         else:
                             self.who_wins = 'Cross wins'
                         self.win = True
+
+                    f1 = pygame.font.Font(None, 25)
+                    text1 = f1.render(str(counter___), True, (180, 0, 0))
+                    screen.blit(text1, (cell_size * i + 2 * (3 - k) * cell_size, cell_size * j + 6 * cell_size * k,
+                                        cell_size,
+                                        cell_size))
+                    counter___ += 1
 
                     pygame.draw.rect(screen, BLACK,
                                      (cell_size * i + 2 * (3 - k) * cell_size, cell_size * j + 6 * cell_size * k,
