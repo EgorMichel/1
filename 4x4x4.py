@@ -348,8 +348,8 @@ class Button:
             font = pygame.font.SysFont('arial', 36)
             text = font.render(self.text, True, BLACK)
             self.surface.blit(text,
-                              (self.x + (self.width // 2 + text.get_width() // 2),
-                               self.y + (self.height // 2 + text.get_height() // 2)))
+                              (self.x + (self.width // 2 - text.get_width() // 2),
+                               self.y + (self.height // 2 - text.get_height() // 2)))
 
     def is_pressed(self, pos):
         # Pos is the mouse position or a tuple of (x,y) coordinates
