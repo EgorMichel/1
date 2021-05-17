@@ -61,11 +61,17 @@ class Player:
         return np.dot(input_values, self.weights) + self.bias
 
 
-linear_bot = Player()
+linear_bot1 = Player()
 with open('LinearAI/_player1_weights.txt', 'r') as file:
-    linear_bot.weights = np.loadtxt(file)
+    linear_bot1.weights = np.loadtxt(file)
 with open('LinearAI/_player1_bias.txt', 'r') as file:
-    linear_bot.bias = np.loadtxt(file)
+    linear_bot1.bias = np.loadtxt(file)
+
+linear_bot2 = Player()
+with open('LinearAI/better_player1_weights.txt', 'r') as file:
+    linear_bot2.weights = np.loadtxt(file)
+with open('LinearAI/better_player1_bias.txt', 'r') as file:
+    linear_bot2.bias = np.loadtxt(file)
 
 
 def array_to_line(array):
@@ -111,7 +117,12 @@ def start():
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]))
 
 
-def move_ai():
+def move_ai(__player):
+    if __player == 1:
+        linear_bot = linear_bot1
+    else:
+        linear_bot = linear_bot2
+
     line = array_to_line(position)
     if current_player[0] == 1:
         res1 = linear_bot.predict(line)
@@ -369,7 +380,7 @@ text_font = pygame.font.Font(None, 55)
 clock = pygame.time.Clock()
 
 
-def start_with_ai():
+def start_with_ai(_player):
     start()
     current_player[0] = 1
     render = Render()
@@ -378,7 +389,7 @@ def start_with_ai():
     finished = False
     while not finished:
         clock.tick(FPS)
-        move_ai()
+        move_ai(_player)
         if current_player[0] == 1:
             frame_count = "Ход компьютера"
         if current_player[0] == -1:
@@ -465,15 +476,15 @@ def help_():
 
 
 def play_with_ai_1():
-    pass
+    start_with_ai(1)
 
 
 def play_with_ai_2():
-    pass
+    start_with_ai(2)
 
 
 def set_difficulty():
-    pass
+
 
 
 menu = pygame_menu.Menu('Tic Tac Toe', width, height,
@@ -481,8 +492,8 @@ menu = pygame_menu.Menu('Tic Tac Toe', width, height,
 
 
 menu.add.button('Игра с ботом', start_with_ai)
-menu.add.button('Игра с ботом 1 :', play_with_ai_1)
-menu.add.button('Игра с ботом 2 :', play_with_ai_2)
+menu.add.button('Игра с ботом 1 :', play_with_ai_2)
+menu.add.button('Игра с ботом 2 :', play_with_ai_1)
 menu.add.button('Игра с человеком', start_the_game)
 menu.add.button('Помощь', help_)
 menu.add.button('Выход', pygame_menu.events.EXIT)
