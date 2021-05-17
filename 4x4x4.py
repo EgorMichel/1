@@ -140,7 +140,7 @@ def click(event_):
        event_.button - проверка нажатия клавиши "правая или левая)
        current_player - показывает, чей ход
        cell_size - размер клетки
-       event_.pos - координата, где была нажата левая кнопка мыши""""
+       event_.pos - координата, где была нажата левая кнопка мыши"""
     for k in range(4):
         for i in range(4):
             for j in range(4):
@@ -152,9 +152,11 @@ def click(event_):
                                 position[k1][i2][j3] = 0
                                 current_player[0] = 0
 
-                if 2 * (3 - k) * cell_size + cell_size * i < event_.pos[0] < 2 * (3 - k) * cell_size + cell_size * (
-                        i + 1) and \
-                        cell_size * j + k * 6 * cell_size < event_.pos[1] < cell_size * (j + 1) + k * cell_size * 6:
+                x__ = (4 - j) * cell_size + int(1.5 * cell_size * i) - cell_size // 2
+                y__ = cell_size * j + 6 * k * cell_size
+
+                if x__ < event_.pos[0] < x__ + int(1.5 * cell_size) and \
+                        y__ < event_.pos[1] < y__ + cell_size:
                     if event_.button == 1 and position[k][i][j] == 0:
                         position[k][i][j] = current_player[0]
                     elif event_.button == 3:
@@ -167,17 +169,19 @@ def click(event_):
 
 
 def draw_figure(n, x_, y_):
+    width_ = cell_size // 6
     """рисование крестиков и ноликов
         Arguments:
         n - номер игрока
         x_ - координата
         y_ - координата"""
     if n == 1:
-        pygame.draw.line(screen, RED, (x_, y_), (x_ + cell_size, y_ + cell_size), 7)
-        pygame.draw.line(screen, RED, (x_ + cell_size, y_), (x_, y_ + cell_size), 7)
+        pygame.draw.line(screen, RED, (x_, y_), (x_ + int(0.5 * cell_size), y_ + cell_size), width_)
+        pygame.draw.line(screen, RED, (x_ + int(1.5 * cell_size), y_), (x_ - cell_size, y_ + cell_size), width_)
 
     if n == -1:
-        pygame.draw.circle(screen, YELLOW, (x_ + cell_size // 2, y_ + cell_size // 2), cell_size // 2, 7)
+        poly = (x_ - int(cell_size * 0.36), y_, int(1.3 * cell_size), int(cell_size))
+        pygame.draw.ellipse(screen, YELLOW, poly, int(width_ * 1.3))
 
 
 class Button:
@@ -208,7 +212,7 @@ class Button:
             font = pygame.font.SysFont('arial', 36)
             text = font.render(self.text, True, BLACK)
             self.surface.blit(text,
-                              (self.x + (self.width // 2 + text.get_width() // 2),
+                                  (self.x + (self.width // 2 + text.get_width() // 2),
                                self.y + (self.height // 2 + text.get_height() // 2)))
 
     def is_pressed(self, pos):
@@ -347,7 +351,7 @@ class Render(object):
         for k in range(4):
             for i in range(4):
                 for j in range(4):
-                    draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
+                    draw_figure(position[k][i][j], (4 - j) * cell_size + int(1.5 * cell_size * i),
                                 cell_size * j + 6 * k * cell_size)
 
         for k in range(5):
@@ -357,13 +361,6 @@ class Render(object):
                                  (10 * cell_size - cell_size * i, cell_size * i + 6 * cell_size * k), 2)
                 pygame.draw.line(screen, BLACK, ((1.5 * i + 4) * cell_size, 6 * cell_size * k),
                                  (1.5 * i * cell_size, 6 * cell_size * k + 4 * cell_size), 2)
-
-            """
-            TODO
-            Нужно переписать код так, чтобы фигурки ставились в параллелограммы
-            """
-            # draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
-            #             cell_size * j + 6 * k * cell_size)
 
 
 pygame.font.init()
