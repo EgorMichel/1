@@ -1,9 +1,7 @@
-import time
 import numpy as np
 import pygame
 import pygame_menu
 import sys
-from random import randint
 
 pygame.init()
 cell_size = 30
@@ -23,16 +21,6 @@ WHITE = (255, 255, 255)
 MAGENTA = (255, 0, 255)
 CYAN = (0, 255, 255)
 BLACK = (0, 0, 0)
-#
-# mutation_chance = 0.1
-# mutation_coefficient = 0.05
-# mutation_parameter = 0.01
-# cross_chance = 0.9
-# cross_parameter = 0.2
-# population = 256
-# iterations = 20000
-# tournament_count = 4
-# evaluation_precise = 25
 
 
 class CheckWin:
@@ -182,26 +170,9 @@ class Player:
         self.bias = np.random.randint(-2, 2, 64)
         self.weights = np.random.randint(-2, 2, (64, 64))
 
-    # def mutation(self):
-    #     for i in range(64):
-    #         if randint(1, 100) <= 100 * mutation_parameter:
-    #             self.bias[i] += randint(-1, 1)
-    #             if self.bias[i] > 10:
-    #                 self.bias[i] = 10
-    #             if self.bias[i] < -10:
-    #                 self.bias[i] = -10
-    #
-    #         for j in range(64):
-    #             if randint(1, 100) <= 100 * mutation_parameter:
-    #                 self.weights[i][j] += randint(-5, 5)
-    #                 if self.weights[i][j] > 100:
-    #                     self.weights[i][j] = 100
-    #                 if self.weights[i][j] < -100:
-    #                     self.weights[i][j] = -100
-
     def predict(self, input_values):
-        """Получает на вход позицию в виде строки, а выдает строку длиной 64 различных int'ов. Максимальное значение
-        строки - та клетка, куда он хочет сходить
+        """Получает на вход позицию в виде строки, а выдает строку длиной 64 различных целочисленных значения.
+        Максимальное значение строки - та клетка, куда он хочет сходить
         Arguments:
             input_values - строка длиной 64. если крестик - 1, если нолик - (-1) """
         return np.dot(input_values, self.weights) + self.bias
@@ -214,7 +185,7 @@ with open('LinearAI/_player1_bias.txt', 'r') as file:
     linear_bot1.bias = np.loadtxt(file)
 
 linear_bot2 = Player()
-with open('LinearAI/better_player1_weights.txt', 'r') as file:
+with open('LinearAI/better_player1_weights.txt', 'r')as file:
     linear_bot2.weights = np.loadtxt(file)
 with open('LinearAI/better_player1_bias.txt', 'r') as file:
     linear_bot2.bias = np.loadtxt(file)
@@ -223,7 +194,7 @@ with open('LinearAI/better_player1_bias.txt', 'r') as file:
 def array_to_line(array):
     """Переводит мнгомерный массив в одномерный.
         Arguments:
-        array - многомерный массив"""
+        array - многомерный массив (list)"""
     line = []
     for k in range(4):
         for i in range(4):
@@ -235,7 +206,7 @@ def array_to_line(array):
 def line_to_array(pos):
     """Переводит мнгомерный массив в одномерный.
     Arguments:
-         pos - позиция
+         pos - позиция (tuple)
     """
     position__ = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                   ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -269,7 +240,7 @@ def start():
 def move_ai(__player):
     """Ход бота.
     Arguments:
-        __player - игрок"""
+        __player - игрок (Player)"""
     ability = check_win.can_win()
     if ability != -1:
         if current_player[0] == 1:
@@ -306,7 +277,7 @@ def move_ai(__player):
 def click(event_):
     """Функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране
        Arguments:
-           event_ - событие"""
+           event_ - событие (pygame.event)"""
     for k in range(4):
         for i in range(4):
             for j in range(4):
@@ -337,9 +308,9 @@ def click(event_):
 def draw_figure(n, x_, y_):
     """Рисование крестиков и ноликов
            Arguments:
-           n - номер игрока
-           x_ - координата
-           y_ - координата"""
+           n - номер игрока (int)
+           x_ - координата (int)
+           y_ - координата (int)"""
     width_ = cell_size // 6
     if n == 1:
         pygame.draw.line(screen, RED, (x_, y_), (x_ + int(0.5 * cell_size), y_ + cell_size), width_)
@@ -353,13 +324,13 @@ def draw_figure(n, x_, y_):
 class Button:
     def __init__(self, color, x, y, w, h, surface, text=''):
         """Конструктор класса Button
-                self.color - цвет фона кнопки
-                self.x - нач координатакнопки  по х
-                self.y - координата по у
-                self.width - ширина кнопки
-                self.height - высота кнопки
-                self.text - слово на кнопке
-                self.surface - где отображается кнопка, на каком полотне"""
+                self.color - цвет фона кнопки (tuple)
+                self.x - нач координата кнопки  по х (int)
+                self.y - координата по у (int)
+                self.width - ширина кнопки (int)
+                self.height - высота кнопки (int)
+                self.text - слово на кнопке (int)
+                self.surface - где отображается кнопка, на каком полотне (pygame.surface)"""
         self.color = color
         self.x = x
         self.y = y
@@ -377,14 +348,14 @@ class Button:
             font = pygame.font.SysFont('arial', 36)
             text = font.render(self.text, True, BLACK)
             self.surface.blit(text,
-                                  (self.x + (self.width // 2 + text.get_width() // 2),
+                              (self.x + (self.width // 2 + text.get_width() // 2),
                                self.y + (self.height // 2 + text.get_height() // 2)))
 
     def is_pressed(self, pos):
         # Pos is the mouse position or a tuple of (x,y) coordinates
         """Проверяет, попал ли пользователь в клеточку. если да, возвращает обратно в меню
         Arguments:
-            pos - координата мышки"""
+            pos - координата мышки (tuple)"""
         if (pos[0] > self.x) and pos[0] < self.x + self.width:
             if pos[1] > self.y and (pos[1] < self.y + self.height):
                 return True
@@ -425,7 +396,7 @@ clock = pygame.time.Clock()
 def start_with_ai(_player):
     """Начать игру с ботом.
     Arguments:
-        _player - игрок"""
+        _player - игрок (Player)"""
     start()
     current_player[0] = 1
     render = Render()
@@ -500,11 +471,11 @@ def start_the_game():
 def help_():
     """Кнопка помощи, как вернуться в меню из игры."""
     hint = True
-    button = Button(BLUE, width//2 - 50, height//2 - 30, 100, 60, screen, 'Back')
+    button = Button(BLUE, width // 2 - 50, height // 2 - 30, 100, 60, screen, 'Back')
     screen.fill(GREEN)
     font = pygame.font.SysFont('arial', 36)
     message = font.render("Press 'p' key to return to the menu", True, BLUE)
-    screen.blit(message, (width // 2 - message.get_width()//2, height // 2 - 2 * message.get_height()))
+    screen.blit(message, (width // 2 - message.get_width() // 2, height // 2 - 2 * message.get_height()))
     button.show()
     pygame.display.update()
     while hint:
@@ -534,7 +505,8 @@ def play_with_ai_2():
 def set_difficulty(posos, bombom):
     """Задает сложность игры
     Arguments:
-        bombom - сложность"""
+        posos - позиция (tuple)
+        bombom - сложность (int)"""
     difficulty[0] = bombom
 
 
