@@ -221,7 +221,7 @@ with open('LinearAI/better_player1_bias.txt', 'r') as file:
 
 
 def array_to_line(array):
-    """Переводит мнгомерный массив в одномерный.
+    """Переводит многомерный массив в одномерный.
         Arguments:
         array - многомерный массив"""
     line = []
@@ -233,7 +233,7 @@ def array_to_line(array):
 
 
 def line_to_array(pos):
-    """Переводит мнгомерный массив в одномерный.
+    """Переводит многомерный массив в одномерный.
     Arguments:
          pos - позиция
     """
@@ -304,7 +304,7 @@ def move_ai(__player):
 
 
 def click(event_):
-    """Функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране
+    """Функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране.
        Arguments:
            event_ - событие"""
     for k in range(4):
@@ -335,7 +335,7 @@ def click(event_):
 
 
 def draw_figure(n, x_, y_):
-    """Рисование крестиков и ноликов
+    """Рисование крестиков и ноликов.
            Arguments:
            n - номер игрока
            x_ - координата
@@ -352,7 +352,7 @@ def draw_figure(n, x_, y_):
 
 class Button:
     def __init__(self, color, x, y, w, h, surface, text=''):
-        """Конструктор класса Button
+        """Конструктор класса Button.
                 self.color - цвет фона кнопки
                 self.x - нач координатакнопки  по х
                 self.y - координата по у
@@ -382,7 +382,7 @@ class Button:
 
     def is_pressed(self, pos):
         # Pos is the mouse position or a tuple of (x,y) coordinates
-        """Проверяет, попал ли пользователь в клеточку. если да, возвращает обратно в меню
+        """Проверяет, попал ли пользователь в клеточку. Если да, возвращает обратно в меню.
         Arguments:
             pos - координата мышки"""
         if (pos[0] > self.x) and pos[0] < self.x + self.width:
@@ -400,7 +400,7 @@ class Render(object):
         self.who_wins = ''
 
     def draw(self):
-        """Обрабатывает нажатие на определенную ячейку, отрисовывает поле и ставит фигурки"""
+        """Обрабатывает нажатие на определенную ячейку, отрисовывает поле и ставит фигурки."""
         for k in range(4):
             for i in range(4):
                 for j in range(4):
@@ -532,7 +532,7 @@ def play_with_ai_2():
 
 
 def set_difficulty(posos, bombom):
-    """Задает сложность игры
+    """Задает сложность игры.
     Arguments:
         bombom - сложность"""
     difficulty[0] = bombom
