@@ -36,6 +36,7 @@ evaluation_precise = 25
 
 class Player:
     def __init__(self):
+        """"""
         self.bias = np.random.randint(-2, 2, 64)
         self.weights = np.random.randint(-2, 2, (64, 64))
 
@@ -100,6 +101,9 @@ position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
 
 
 def start():
+    """устанавливаем позицию в начале игры
+        Arguments:
+        position - инициализация начального положения """
     global position
     position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -130,6 +134,13 @@ def move_ai():
 
 
 def click(event_):
+    """функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране
+       Arguments:
+       k, i, j, k1, i2, j3 - счётчики в циклах
+       event_.button - проверка нажатия клавиши "правая или левая)
+       current_player - показывает, чей ход
+       cell_size - размер клетки
+       event_.pos - координата, где была нажата левая кнопка мыши""""
     for k in range(4):
         for i in range(4):
             for j in range(4):
@@ -156,6 +167,11 @@ def click(event_):
 
 
 def draw_figure(n, x_, y_):
+    """рисование крестиков и ноликов
+        Arguments:
+        n - номер игрока
+        x_ - координата
+        y_ - координата"""
     if n == 1:
         pygame.draw.line(screen, RED, (x_, y_), (x_ + cell_size, y_ + cell_size), 7)
         pygame.draw.line(screen, RED, (x_ + cell_size, y_), (x_, y_ + cell_size), 7)
@@ -166,6 +182,14 @@ def draw_figure(n, x_, y_):
 
 class Button:
     def __init__(self, color, x, y, w, h, surface, text=''):
+        """инициализация начальных значений
+                self.color - цвет фона кнопки
+                self.x - нач координатакнопки  по х
+                self.y - координата по у
+                self.width - ширина кнопки
+                self.height - высота кнопки
+                self.text - слово на кнопке
+                self.surface - где отображается кнопка, на каком полотне"""
         self.color = color
         self.x = x
         self.y = y
@@ -176,7 +200,8 @@ class Button:
 
     def show(self):
         # Call this method to draw the button on the screen
-
+        """рисование кнопки на экране
+                """
         pygame.draw.rect(self.surface, self.color, (self.x, self.y, self.width, self.height), 0)
 
         if self.text != '':
@@ -188,6 +213,7 @@ class Button:
 
     def is_pressed(self, pos):
         # Pos is the mouse position or a tuple of (x,y) coordinates
+        """проверяет, попал ли пользователь в клеточку. если да, возвращает обратно в меню"""
         if (pos[0] > self.x) and pos[0] < self.x + self.width:
             if pos[1] > self.y and (pos[1] < self.y + self.height):
                 return True
@@ -200,6 +226,7 @@ class CheckWin:
         self.win = False
 
     def check(self):
+        """Обрабатывает нажатие на определенную ячейку, отрисовывает поле и ставит фигурки"""
         for k in range(4):
             for i in range(4):
                 for j in range(4):
@@ -304,12 +331,19 @@ class CheckWin:
 
 class Render(object):
     def __init__(self):
+        """инициализация начальных значений
+               Arguments:
+               self.win - если True, значит победа и больше ходить нельзя. False - игра продолжается
+               self.pos - массив клеток
+               self.message - выводимое сообщение, кто выиграл
+               self.who_wins - определение победителя и вывод на экран"""
         self.win = False
         self.pos = position
         self.message = ''
         self.who_wins = ''
 
     def draw(self):
+        """Обрабатывает нажатие на определенную ячейку, отрисовывает поле и ставит фигурки"""
         for k in range(4):
             for i in range(4):
                 for j in range(4):
@@ -373,6 +407,15 @@ def start_with_ai():
 
 
 def start_the_game():
+    """после нажатия на кнопки запускает игровой цикл
+       Arguments:
+       render -
+       frame_count - выводится надпись
+       finished- завершение игры
+       text_image -
+       text_x - размер текста по х
+       text_y - размер текста по у
+       keys - ..."""
     start()
     render = Render()
     check_win = CheckWin()
