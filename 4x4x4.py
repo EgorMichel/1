@@ -503,7 +503,8 @@ def play_with_ai_2():
 
 
 def set_difficulty(posos, bombom):
-    """Задает сложность игры
+    """
+    Задает сложность игры
     Arguments:
         posos - позиция (tuple)
         bombom - сложность (int)"""
