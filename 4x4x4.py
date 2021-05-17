@@ -37,6 +37,7 @@ BLACK = (0, 0, 0)
 
 class CheckWin:
     def __init__(self):
+        """Конструктор класса CheckWin."""
         self.who_wins = ''
         self.win = False
 
@@ -138,6 +139,7 @@ class CheckWin:
                         self.win = True
 
     def can_win(self):
+        """Проверяет, возможно ли победить в один ход."""
         for k in range(4):
             for i in range(4):
                 for j in range(4):
@@ -164,6 +166,7 @@ class CheckWin:
         return -1
 
     def message(self):
+        """Выводит, кто победил."""
         if self.win:
             font = pygame.font.Font(None, 56)
             text = font.render(self.who_wins, True, BLUE)
@@ -230,7 +233,7 @@ def array_to_line(array):
 
 
 def line_to_array(pos):
-    """
+    """Переводит мнгомерный массив в одномерный.
     Arguments:
          pos - позиция
     """
@@ -255,9 +258,7 @@ position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
 
 
 def start():
-    """устанавливаем позицию в начале игры
-        Arguments:
-        position - инициализация начального положения """
+    """Устанавливаем позицию в начале игры"""
     global position
     position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -266,6 +267,9 @@ def start():
 
 
 def move_ai(__player):
+    """Ход бота.
+    Arguments:
+        __player - игрок"""
     ability = check_win.can_win()
     if ability != -1:
         if current_player[0] == 1:
@@ -300,13 +304,9 @@ def move_ai(__player):
 
 
 def click(event_):
-    """функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране
+    """Функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране
        Arguments:
-       k, i, j, k1, i2, j3 - счётчики в циклах
-       event_.button - проверка нажатия клавиши "правая или левая)
-       current_player - показывает, чей ход
-       cell_size - размер клетки
-       event_.pos - координата, где была нажата левая кнопка мыши"""
+           event_ - событие"""
     for k in range(4):
         for i in range(4):
             for j in range(4):
@@ -352,7 +352,7 @@ def draw_figure(n, x_, y_):
 
 class Button:
     def __init__(self, color, x, y, w, h, surface, text=''):
-        """инициализация начальных значений
+        """Конструктор класса Button
                 self.color - цвет фона кнопки
                 self.x - нач координатакнопки  по х
                 self.y - координата по у
@@ -393,12 +393,7 @@ class Button:
 
 class Render(object):
     def __init__(self):
-        """инициализация начальных значений
-               Arguments:
-               self.win - если True, значит победа и больше ходить нельзя. False - игра продолжается
-               self.pos - массив клеток
-               self.message - выводимое сообщение, кто выиграл
-               self.who_wins - определение победителя и вывод на экран"""
+        """Конструктор класса Render"""
         self.win = False
         self.pos = position
         self.message = ''
@@ -470,15 +465,7 @@ def start_with_ai(_player):
 
 
 def start_the_game():
-    """после нажатия на кнопки запускает игровой цикл
-       Arguments:
-       render -
-       frame_count - выводится надпись
-       finished- завершение игры
-       text_image -
-       text_x - размер текста по х
-       text_y - размер текста по у
-       keys - ..."""
+    """После нажатия на кнопки запускает игровой цикл"""
     start()
     render = Render()
     check_win = CheckWin()
@@ -545,6 +532,9 @@ def play_with_ai_2():
 
 
 def set_difficulty(posos, bombom):
+    """Задает сложность игры
+    Arguments:
+        bombom - сложность"""
     difficulty[0] = bombom
 
 
