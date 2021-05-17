@@ -62,7 +62,7 @@ class Player:
         """Получает на вход позицию в виде строки, а выдает строку длиной 64 различных int'ов. Максимальное значение
         строки - та клетка, куда он хочет сходить
         Arguments:
-            input_values - """
+            input_values - строка длиной 64. если крестик - 1, если нолик - (-1) """
         return np.dot(input_values, self.weights) + self.bias
 
 
@@ -94,7 +94,7 @@ def array_to_line(array):
 def line_to_array(pos):
     """
     Arguments:
-         pos -
+         pos - позиция
     """
     position__ = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                   ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -119,7 +119,7 @@ position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
 
 
 def start():
-    """устанавливаем позицию в начале игры"""
+    """Устанавливаем позицию в начале игры"""
     global position
     position = (([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
                 ([0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]),
@@ -130,7 +130,7 @@ def start():
 def move_ai(__player):
     """
     Arguments:
-         __player -
+         __player - текущий игрок, либо 1, либо 2
     """
     if __player == 1:
         linear_bot = linear_bot1
@@ -159,7 +159,9 @@ def move_ai(__player):
 
 
 def click(event_):
-    """функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране"""
+    """Функция, осуществляющая связь между нажатиями кнопок и отображением этого на экране
+    Arguments:
+        event_ - событие"""
     for k in range(4):
         for i in range(4):
             for j in range(4):
@@ -237,7 +239,7 @@ class Button:
         # Pos is the mouse position or a tuple of (x,y) coordinates
         """Проверяет, попал ли пользователь в клеточку. если да, возвращает обратно в меню
         Arguments:
-            pos - """
+            pos - координата мышки"""
         if (pos[0] > self.x) and pos[0] < self.x + self.width:
             if pos[1] > self.y and (pos[1] < self.y + self.height):
                 return True
@@ -246,7 +248,7 @@ class Button:
 
 class CheckWin:
     def __init__(self):
-        """"""
+        """Конструктор класса CheckWin"""
         self.who_wins = ''
         self.win = False
 
@@ -348,7 +350,7 @@ class CheckWin:
                         self.win = True
 
     def message(self):
-        """"""
+        """Выводит сообщение о том, кто победил."""
         if self.win:
             font = pygame.font.Font(None, 56)
             text = font.render(self.who_wins, True, BLUE)
@@ -357,12 +359,7 @@ class CheckWin:
 
 class Render(object):
     def __init__(self):
-        """Инициализация начальных значений
-               Arguments:
-               self.win - если True, значит победа и больше ходить нельзя. False - игра продолжается
-               self.pos - массив клеток
-               self.message - выводимое сообщение, кто выиграл
-               self.who_wins - определение победителя и вывод на экран"""
+        """Инициализация начальных значений"""
         self.win = False
         self.pos = position
         self.message = ''
@@ -392,7 +389,9 @@ clock = pygame.time.Clock()
 
 
 def start_with_ai(_player):
-    """"""
+    """Начать игру с ботом.
+    Arguments:
+        _player - игрок"""
     start()
     current_player[0] = 1
     render = Render()
@@ -460,7 +459,7 @@ def start_the_game():
 
 
 def help_():
-    """"""
+    """Кнопка помощи, как вернуться в меню из игры."""
     hint = True
     button = Button(BLUE, width//2 - 50, height//2 - 30, 100, 60, screen, 'Back')
     screen.fill(GREEN)
@@ -484,17 +483,17 @@ def help_():
 
 
 def play_with_ai_1():
-    """"""
+    """Начать игру с 1 ботом."""
     start_with_ai(1)
 
 
 def play_with_ai_2():
-    """"""
+    """Начать игру со 2 ботом"""
     start_with_ai(2)
 
 
 def set_difficulty():
-    """"""
+    """Задать сложность игры."""
     pass
 
 
