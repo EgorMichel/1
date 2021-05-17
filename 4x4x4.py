@@ -424,10 +424,25 @@ def help_():
         pygame.display.update()
 
 
+def play_with_ai_1():
+    pass
+
+
+def play_with_ai_2():
+    pass
+
+
+def set_difficulty():
+    pass
+
+
 menu = pygame_menu.Menu('Tic Tac Toe', width, height,
                         theme=pygame_menu.themes.THEME_BLUE)
 
+
 menu.add.button('Игра с ботом', start_with_ai)
+menu.add.button('Игра с ботом 1 :', play_with_ai_1)
+menu.add.button('Игра с ботом 2 :', play_with_ai_2)
 menu.add.button('Игра с человеком', start_the_game)
 menu.add.button('Помощь', help_)
 menu.add.button('Выход', pygame_menu.events.EXIT)
