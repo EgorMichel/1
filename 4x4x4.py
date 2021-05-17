@@ -322,12 +322,20 @@ class Render(object):
                                         cell_size))
                     counter___ += 1
 
-                    pygame.draw.rect(screen, BLACK,
-                                     (cell_size * i + 2 * (3 - k) * cell_size, cell_size * j + 6 * cell_size * k,
-                                      cell_size,
-                                      cell_size), 2)
-                    draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
-                                cell_size * j + 6 * k * cell_size)
+        for k in range(5):
+            for i in range(5):
+                pygame.draw.line(screen, BLACK,
+                                 (4 * cell_size - i * cell_size, cell_size * i + 6 * cell_size * k),
+                                 (10 * cell_size - cell_size * i, cell_size * i + 6 * cell_size * k), 2)
+                pygame.draw.line(screen, BLACK, ((1.5 * i + 4) * cell_size, 6 * cell_size * k),
+                                 (1.5 * i * cell_size, 6 * cell_size * k + 4 * cell_size), 2)
+
+            """
+            TODO
+            Нужно переписать код так, чтобы фигурки ставились в параллелограммы
+            """
+            # draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
+            #            cell_size * j + 6 * k * cell_size)
 
 
 pygame.font.init()
