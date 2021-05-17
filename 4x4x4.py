@@ -313,14 +313,8 @@ class Render(object):
         for k in range(4):
             for i in range(4):
                 for j in range(4):
-                    counter___ = 0
-
-                    f1 = pygame.font.Font(None, 25)
-                    text1 = f1.render(str(counter___), True, (180, 0, 0))
-                    screen.blit(text1, (cell_size * i + 2 * (3 - k) * cell_size, cell_size * j + 6 * cell_size * k,
-                                        cell_size,
-                                        cell_size))
-                    counter___ += 1
+                    draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
+                                cell_size * j + 6 * k * cell_size)
 
         for k in range(5):
             for i in range(5):
@@ -335,7 +329,7 @@ class Render(object):
             Нужно переписать код так, чтобы фигурки ставились в параллелограммы
             """
             # draw_figure(position[k][i][j], 2 * (3 - k) * cell_size + cell_size * i,
-            #            cell_size * j + 6 * k * cell_size)
+            #             cell_size * j + 6 * k * cell_size)
 
 
 pygame.font.init()
