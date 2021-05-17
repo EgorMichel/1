@@ -223,8 +223,8 @@ class Button:
             font = pygame.font.SysFont('arial', 36)
             text = font.render(self.text, True, BLACK)
             self.surface.blit(text,
-                                  (self.x + (self.width // 2 + text.get_width() // 2),
-                               self.y + (self.height // 2 + text.get_height() // 2)))
+                              (self.x + (self.width // 2 - text.get_width() // 2),
+                               self.y + (self.height // 2 - text.get_height() // 2)))
 
     def is_pressed(self, pos):
         # Pos is the mouse position or a tuple of (x,y) coordinates
@@ -457,15 +457,18 @@ def start_the_game():
 
 def help_():
     hint = True
-    button = Button(BLUE, width - 40, height + 20, 80, 40, screen, 'Back')
+    button = Button(BLUE, width//2 - 50, height//2 - 30, 100, 60, screen, 'Back')
     screen.fill(GREEN)
     font = pygame.font.SysFont('arial', 36)
     message = font.render("Press 'p' key to return to the menu", True, BLUE)
-    screen.blit(message, (width // 2 - 200, height // 2))
+    screen.blit(message, (width // 2 - message.get_width()//2, height // 2 - 2 * message.get_height()))
     button.show()
     pygame.display.update()
     while hint:
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     if button.is_pressed(event.pos):
@@ -484,12 +487,11 @@ def play_with_ai_2():
 
 
 def set_difficulty():
-
+    pass
 
 
 menu = pygame_menu.Menu('Tic Tac Toe', width, height,
                         theme=pygame_menu.themes.THEME_BLUE)
-
 
 menu.add.button('Игра с ботом', start_with_ai)
 menu.add.button('Игра с ботом 1 :', play_with_ai_2)
